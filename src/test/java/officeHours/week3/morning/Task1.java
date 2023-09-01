@@ -16,6 +16,8 @@ import java.util.Random;
 
 public class Task1  extends HrTestBase {
 
+   static private int global_region_id; //I will make it private, I don't want to use it from the other classes.
+
     @Test
     void create_region() {
         Map<String, Object> RequestBody =new HashMap<>();
@@ -26,6 +28,8 @@ public class Task1  extends HrTestBase {
         Random random = new Random();
         int random_region_id = random.nextInt(1000)+100;
         int expected_region_id = random_region_id;
+
+        global_region_id =expected_region_id;
         String expected_region_name ="Arstan region";
         System.out.println("expected_region_id = " + expected_region_id);
 
@@ -49,6 +53,15 @@ public class Task1  extends HrTestBase {
 
     @Test
     void get_region() {
+
+        RestAssured
+                .given()
+                .accept(ContentType.JSON)
+                .get("/regions/"+global_region_id)
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON).extract().response().prettyPeek();
+
 
 
 
